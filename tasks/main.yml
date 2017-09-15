@@ -1,10 +1,13 @@
 ---
+- name: Get rpm
+  get_url:
+    url: https://collectors.sumologic.com/rest/download/rpm/64
+    dest: /tmp/sumologic.rpm
 
 - name: install sumologic rpm
   yum:
-    name: '{{ sumologic_rpm_url }}'
+    name: '/tmp/sumologic.rpm'
     state: present
-  become: yes  
 
 - name: put config file in place
   template:
@@ -12,7 +15,6 @@
     dest: '/opt/SumoCollector/config/user.properties'
     owner: root
     group: sumologic_collector
-  become: yes  
 
 - name: put sources file in place
   template:
@@ -20,11 +22,9 @@
     dest: '/opt/SumoCollector/config/sources.json'
     owner: root
     group: sumologic_collector
-  become: yes      
 
 - name: start service
   service:
     name: collector
-    state: stopped
+    state: started
     enabled: yes
-  become: yes      
