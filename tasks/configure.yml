@@ -1,0 +1,11 @@
+- name: put sources file in place
+  template:
+    src: 'templates/sources.json.j2'
+    dest: '/opt/SumoCollector/config/sources.json'
+    owner: root
+    group: sumologic_collector
+
+- name: restart service
+  service:
+    name: collector
+    state: restarted
