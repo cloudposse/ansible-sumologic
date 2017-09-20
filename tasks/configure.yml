@@ -1,9 +1,18 @@
 - name: add custom collection
   template:
-    src: 'templates/sources.json.j2'
+    src: 'templates/sources-redhat.json.j2'
     dest: '/opt/SumoCollector/config/sources.json'
     owner: root
     group: sumologic_collector
+  when: ansible_os_family == "RedHat"
+
+- name: add custom collection
+  template:
+    src: 'templates/sources-debian.json.j2'
+    dest: '/opt/SumoCollector/config/sources.json'
+    owner: root
+    group: sumologic_collector
+  when: ansible_os_family == "Debian"
 
 - name: restart service
   service:

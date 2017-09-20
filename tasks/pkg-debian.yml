@@ -1,0 +1,17 @@
+---
+- name: Get deb
+  get_url:
+    url: https://collectors.sumologic.com/rest/download/deb/64
+    dest: /tmp/sumologic.deb
+  when: check_deb.rc == 1
+
+- name: install sumologic deb
+  apt:
+    deb: '/tmp/sumologic.deb'
+  when: check_deb.rc == 1
+
+- name: delete deb file
+  file:
+    path: "/tmp/sumologic.deb"
+    state: absent
+  when: check_deb.rc == 1

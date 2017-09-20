@@ -5,10 +5,19 @@
   register: check_rpm
   when: ansible_os_family == "RedHat"
 
+- name: Is Sumologic Agent installed?
+  shell: dpkg-query -l sumocollector
+  register: check_deb
+  failed_when: check_deb.rc > 1
+  when: ansible_os_family == "Debian"
+
 - name: Install Sumologic Agent
   include: pkg-redhat.yml
-  when: check_rpm.results == [] and ansible_os_family == "RedHat"
+  when: ansible_os_family == "RedHat"
 
+- name: Install Sumologic Agent
+  include: pkg-debian.yml
+  when: ansible_os_family == "Debian"
 
 - name: put config file in place
   template:
@@ -19,10 +28,19 @@
 
 - name: put sources file in place
   template:
-    src: 'templates/sources.json.j2'
+    src: 'templates/sources-redhat.json.j2'
     dest: '/opt/SumoCollector/config/sources.json'
     owner: root
     group: sumologic_collector
+  when: ansible_os_family == "RedHat"
+
+- name: put sources file in place
+  template:
+    src: 'templates/sources-debian.json.j2'
+    dest: '/opt/SumoCollector/config/sources.json'
+    owner: root
+    group: sumologic_collector
+  when: ansible_os_family == "Debian"
 
 - name: start service
   service:
