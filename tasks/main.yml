@@ -8,9 +8,16 @@
 
 - name: Install Sumologic Agent
   include: pkg-redhat.yml
-  when: check_rpm.results is not defined and ansible_os_family == "RedHat"
+  when: check_rpm.results == [] and ansible_os_family == "RedHat"
+
+- name: put sources file in place
+  template:
+    src: 'templates/sources.json.j2'
+    dest: '/opt/SumoCollector/config/sources.json'
+    owner: root
+    group: sumologic_collector
 
 - name: Configure Sumologic Agent
   include: configure.yml
   tags:
-    - configure
+  - configure
