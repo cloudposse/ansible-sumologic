@@ -1,4 +1,4 @@
-- name: put sources file in place
+- name: add custom collection
   template:
     src: 'templates/sources.json.j2'
     dest: '/opt/SumoCollector/config/sources.json'

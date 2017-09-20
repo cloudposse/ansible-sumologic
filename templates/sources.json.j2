@@ -45,7 +45,22 @@
       "pathExpression": "/var/log/yum.log",
       "blacklist": [],
       "sourceType": "LocalFile"
-    }    
+    },
+    {
+      "name": "Linux dmesg",
+      "description": "Kernel messages",
+      "category": "OS/Linux",
+      "automaticDateParsing": false,
+      "multilineProcessingEnabled": true,
+      "useAutolineMatching": false,
+      "forceTimeZone": true,
+      "timeZone": "{{ env_timezone }}",
+      "filters": [],
+      "encoding": "UTF-8",
+      "pathExpression": "/var/log/dmesg",
+      "blacklist": [],
+      "sourceType": "LocalFile"
+    }
 {% for log in sumologic_tracked_logs %}
     ,
     {
