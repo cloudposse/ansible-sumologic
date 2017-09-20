@@ -1,17 +1,17 @@
 ---
-- name: Get rpm
+- name: Get rpm file
   get_url:
     url: https://collectors.sumologic.com/rest/download/rpm/64
     dest: /tmp/sumologic.rpm
   when: check_rpm.results == []
 
-- name: install sumologic rpm
+- name: Install sumologic rpm
   yum:
     name: '/tmp/sumologic.rpm'
     state: installed
   when: check_rpm.results == []
 
-- name: delete rpm file
+- name: Delete rpm file
   file:
     path: "/tmp/sumologic.rpm"
     state: absent
